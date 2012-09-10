@@ -1,2 +1,1 @@
-robox
-=====
+Game featuring abandoned robot on some planet.
