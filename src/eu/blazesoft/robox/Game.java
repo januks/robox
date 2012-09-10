@@ -97,7 +97,15 @@ public class Game {
 	
 	// function for handling input
 	private void input() {
-		
+		while (Keyboard.next()) {
+            if (Keyboard.getEventKey() == Keyboard.KEY_C && Keyboard.getEventKeyState()) {
+                zone.generate();
+            }
+        }
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            Display.destroy();
+            System.exit(0);
+        }
 		//System.out.println(Mouse.getX() + " / " + Mouse.getY());
 	}
 
