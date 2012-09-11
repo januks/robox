@@ -43,7 +43,7 @@ public class Zone {
 		
 		// testing things
 		ZoneGenerator zg = new ZoneGenerator(zoneSeed);
-		zg.generateMap();
+		//zg.generateMap();
 		zone = zg.getZone();
 		//zg.printTileValues();
 	}
