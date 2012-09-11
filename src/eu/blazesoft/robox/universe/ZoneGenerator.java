@@ -69,7 +69,7 @@ public class ZoneGenerator {
             for (int y = 0; y < World.ZONE_HEIGHT; y++) {
             	if (map[x][y].value < -0.7) { 
             		zone[x][y] = Tile.water;
-            	} else if (map[x][y].value > 0.7) {
+            	} else if (map[x][y].value > 0.6) {
             		zone[x][y] = Tile.rock;
             	} else {
             		zone[x][y] = Tile.dirt;
