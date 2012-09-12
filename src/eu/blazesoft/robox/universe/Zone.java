@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.Sys;
 
+import eu.blazesoft.robox.Game;
 import eu.blazesoft.robox.World;
 import eu.blazesoft.robox.universe.tile.Tile;
 
@@ -16,10 +17,13 @@ public class Zone {
 	
 	private Random random;
 	private long zoneSeed;
+		
+	private Game game;
 	
 	private Tile[][] zone = new Tile[World.ZONE_WIDTH][World.ZONE_HEIGHT];
 	
-	public Zone() {
+	public Zone(Game game) {
+		this.game = game;
 		generate();
 	}
 	
@@ -27,19 +31,6 @@ public class Zone {
 		zoneSeed = Sys.getTime();
 		random = new Random(zoneSeed);
 		System.out.println("Seed: "+zoneSeed);
-		// generate ground
-//		for (int x = 0; x < World.ZONE_WIDTH - 1; x++) {
-//            for (int y = 0; y < World.ZONE_HEIGHT - 1; y++) {
-//            	int r = random.nextInt(5);
-//            	if (r < 1) {
-//            		zone[x][y] = Tile.water;
-//            	} else if (r >= 1 && r < 2) {
-//            		zone[x][y] = Tile.rock;
-//            	} else {
-//            		zone[x][y] = Tile.dirt;
-//            	}
-//            }
-//        }	
 		
 		// testing things
 		ZoneGenerator zg = new ZoneGenerator(zoneSeed);
@@ -55,7 +46,7 @@ public class Zone {
 	public void render() {	
 		for (int x = 0; x < World.ZONE_WIDTH; x++) {
             for (int y = 0; y < World.ZONE_HEIGHT; y++) {
-                zone[x][y].render(x,y);
+                zone[x][y].render(x*World.TILE_SIZE*World.SCALE+game.getScreenCenterX(),y*World.TILE_SIZE*World.SCALE + game.getScreenCenterY());
             }
         }
 	}

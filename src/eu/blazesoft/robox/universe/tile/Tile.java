@@ -16,7 +16,7 @@ public class Tile {
 		tiles[id] = this;
 	}
 	
-	public void render(int x, int y) {	
+	public void render(float x, float y) {	
 	}
 	
 	public void update() {

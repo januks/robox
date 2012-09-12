@@ -94,20 +94,20 @@ public class Game {
 	}
 	
 	private void init_objects() {
-		zone = new Zone();
-		player = new Player(100,100);
+		zone = new Zone(this);
+		player = new Player(0,0, this);
 	}
 	
 	// function for handling input
 	private void input() {
 		// player input handling
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) player.moveX(-0.35f);
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) player.moveX(0.35f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) player.moveX(-0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) player.moveX(0.2f);
 		if (!(Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_D))) {
 			player.moveX(0);
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_W)) player.moveY(0.35f);
-		if (Keyboard.isKeyDown(Keyboard.KEY_S)) player.moveY(-0.35f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) player.moveY(0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)) player.moveY(-0.2f);
 		if (!(Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_S))) {
 			player.moveY(0);
 		}
@@ -116,12 +116,17 @@ public class Game {
                 zone.generate();
             }
             if (Keyboard.getEventKey() == Keyboard.KEY_ADD && Keyboard.getEventKeyState()) {
-            	World.SCALE *= 2;
+            	World.SCALE += 0.2;
+            	if (World.SCALE > 1)
+            		World.SCALE = 1;
+            	// after changing scale need to load/unload zones
             }
             if (Keyboard.getEventKey() == Keyboard.KEY_SUBTRACT && Keyboard.getEventKeyState()) {
-            	World.SCALE /= 2;
-            	if (World.SCALE < 0.5f)
-            		World.SCALE = 0.5f;
+            	World.SCALE -= 0.2;
+            	if (World.SCALE < 0.1f)
+            		World.SCALE = 0.1f;
+            	// after changing scale need to load/unload zones
+            	// full zoomout could be used as map... need to think about black portions - unexplored ones
             }
         }
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -144,31 +149,14 @@ public class Game {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		zone.render();
 		player.render();
-		// R,G,B,A Set The Color To Blue One Time Only
-		//glColor3f(0.5f, 0.5f, 1.0f);
-
-		// draw quad
-		//glPushMatrix();
-			// translating current point to x,y
-			//glTranslatef(x, y, 0);	
-			// then rotating
-			//glRotatef(rotation, 0, 0, 0.1f);
-			// then translating point back to prev
-			/**
-			 lTranslatef(x, y, 0);	
-
-			glScalef(scale, scale, 0);
-			glTranslatef(-x, -y, 0);
-			
-			System.out.println(scale);
-			glBegin(GL_QUADS);
-				glVertex2f(x - 50, y - 50);
-				glVertex2f(x + 50, y - 50);
-				glVertex2f(x + 50, y + 50);
-				glVertex2f(x - 50, y + 50);
-			glEnd();
-			*/
-		//glPopMatrix();
+	}
+	
+	public int getScreenCenterX() {
+		return screenWidth/2;
+	}
+	
+	public int getScreenCenterY() {
+		return screenHeight/2;
 	}
 	
 	public static void main(String[] argv) {
