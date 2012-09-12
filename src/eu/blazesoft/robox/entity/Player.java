@@ -29,7 +29,7 @@ public class Player extends Mob {
 	public void render() {
 		glPushMatrix();
 		glColor3f(1f, 0f, 0f);
-        glTranslatef(game.getScreenCenterX() + x, game.getScreenCenterY() + y, 0);
+        glTranslatef(game.getScreenCenterX() + x*World.SCALE, game.getScreenCenterY() + y*World.SCALE, 0);
         glBegin(GL_QUADS);
         //glTexCoord2f(0, 0);
         glVertex2f(-16*World.SCALE, -16*World.SCALE);
