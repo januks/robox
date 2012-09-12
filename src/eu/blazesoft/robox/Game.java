@@ -8,6 +8,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import eu.blazesoft.robox.entity.Player;
 import eu.blazesoft.robox.universe.Zone;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -26,6 +27,7 @@ public class Game {
 	
 	// Universe variable - contains everything
 	private Zone zone;
+	private Player player;
 
 	public void start() {
 		try {
@@ -93,13 +95,33 @@ public class Game {
 	
 	private void init_objects() {
 		zone = new Zone();
+		player = new Player(100,100);
 	}
 	
 	// function for handling input
 	private void input() {
-		while (Keyboard.next()) {
+		// player input handling
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) player.moveX(-0.35f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) player.moveX(0.35f);
+		if (!(Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_D))) {
+			player.moveX(0);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) player.moveY(0.35f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)) player.moveY(-0.35f);
+		if (!(Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_S))) {
+			player.moveY(0);
+		}
+		while (Keyboard.next()) {		
             if (Keyboard.getEventKey() == Keyboard.KEY_C && Keyboard.getEventKeyState()) {
                 zone.generate();
+            }
+            if (Keyboard.getEventKey() == Keyboard.KEY_ADD && Keyboard.getEventKeyState()) {
+            	World.SCALE *= 2;
+            }
+            if (Keyboard.getEventKey() == Keyboard.KEY_SUBTRACT && Keyboard.getEventKeyState()) {
+            	World.SCALE /= 2;
+            	if (World.SCALE < 0.5f)
+            		World.SCALE = 0.5f;
             }
         }
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -112,6 +134,7 @@ public class Game {
 	// main update function
 	private void update(int delta) {
 		zone.update(delta);
+		player.update(delta);
 		updateFPS(); // update FPS Counter
 	}
 	
@@ -120,6 +143,7 @@ public class Game {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		zone.render();
+		player.render();
 		// R,G,B,A Set The Color To Blue One Time Only
 		//glColor3f(0.5f, 0.5f, 1.0f);
 
