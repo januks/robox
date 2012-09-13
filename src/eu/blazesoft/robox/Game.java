@@ -9,6 +9,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import eu.blazesoft.robox.entity.Player;
+import eu.blazesoft.robox.universe.Planet;
 import eu.blazesoft.robox.universe.Zone;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -26,8 +27,7 @@ public class Game {
 	private int	screenHeight = 600;
 	
 	// Universe variable - contains everything
-	private Zone zone;
-	private Player player;
+	private Planet planet;
 
 	public void start() {
 		try {
@@ -46,9 +46,9 @@ public class Game {
 		while (!Display.isCloseRequested()) {
 			int delta = getDelta();
 			
+			input();
 			update(delta);
 			render();
-			input();
 
 			Display.update();
 			Display.sync(60); // cap fps to 60fps
@@ -94,26 +94,25 @@ public class Game {
 	}
 	
 	private void init_objects() {
-		zone = new Zone(this);
-		player = new Player(0,0, this);
+		planet = new Planet();
 	}
 	
 	// function for handling input
 	private void input() {
 		// player input handling
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) player.moveX(-0.2f);
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) player.moveX(0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) planet.setPlayerDx(-0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) planet.setPlayerDx(0.2f);
 		if (!(Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_D))) {
-			player.moveX(0);
+			planet.setPlayerDx(0);
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_W)) player.moveY(0.2f);
-		if (Keyboard.isKeyDown(Keyboard.KEY_S)) player.moveY(-0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) planet.setPlayerDy(0.2f);
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)) planet.setPlayerDy(-0.2f);
 		if (!(Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_S))) {
-			player.moveY(0);
+			planet.setPlayerDy(0);
 		}
 		while (Keyboard.next()) {		
             if (Keyboard.getEventKey() == Keyboard.KEY_C && Keyboard.getEventKeyState()) {
-                zone.generate();
+                //zone.generate();
             }
             if (Keyboard.getEventKey() == Keyboard.KEY_ADD && Keyboard.getEventKeyState()) {
             	World.SCALE += 0.2;
@@ -138,8 +137,7 @@ public class Game {
 
 	// main update function
 	private void update(int delta) {
-		zone.update(delta);
-		player.update(delta);
+		planet.update(delta);
 		updateFPS(); // update FPS Counter
 	}
 	
@@ -147,8 +145,7 @@ public class Game {
 	private void render() {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		zone.render();
-		player.render();
+		planet.render();
 	}
 	
 	public int getScreenCenterX() {

@@ -1,5 +1,6 @@
 package eu.blazesoft.robox;
 
+// class for holding World constants
 public class World {
 	public final static int ZONE_WIDTH = 129;
 	public final static int ZONE_HEIGHT = 129;
